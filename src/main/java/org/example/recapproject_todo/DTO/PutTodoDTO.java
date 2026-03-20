@@ -1,4 +1,6 @@
 package org.example.recapproject_todo.DTO;
 
-public record PutTodoDTO(String description, String status) {
+import org.example.recapproject_todo.Status.TodoStatus;
+
+public record PutTodoDTO(String description, TodoStatus status) {
 }
