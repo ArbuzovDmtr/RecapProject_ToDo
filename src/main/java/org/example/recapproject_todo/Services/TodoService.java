@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @Service
 public class TodoService {
@@ -42,7 +42,7 @@ public class TodoService {
                 dto.description(),
                 dto.status()
         );
+        return todoRepo.save(updatedTodo);}
 
-        return todoRepo.save(updatedTodo);
-    }
+    public void deleteTodoById(String id) {todoRepo.deleteById(id);}
 }
