@@ -5,6 +5,7 @@ import org.example.recapproject_todo.DTO.PostTodoDTO;
 import org.example.recapproject_todo.DTO.PutTodoDTO;
 import org.example.recapproject_todo.Record.Todo;
 import org.example.recapproject_todo.Services.TodoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +38,8 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTodo(@PathVariable String id){
-        if(getTodoById(id)!=null) {
-            todoService.deleteTodoById(id);
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTodo(@PathVariable String id) {
+        todoService.deleteTodoById(id);
     }
 }

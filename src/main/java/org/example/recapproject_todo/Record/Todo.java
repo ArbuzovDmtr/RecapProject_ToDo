@@ -1,4 +1,9 @@
 package org.example.recapproject_todo.Record;
 
-public record Todo(String id, String description, String status) {
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("todos")
+public record Todo(@Id String id, String description, String status) {
 }

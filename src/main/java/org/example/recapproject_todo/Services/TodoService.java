@@ -4,10 +4,11 @@ import org.example.recapproject_todo.DTO.PostTodoDTO;
 import org.example.recapproject_todo.DTO.PutTodoDTO;
 import org.example.recapproject_todo.Record.Todo;
 import org.example.recapproject_todo.Repository.TodoRepo;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Service
@@ -27,12 +28,14 @@ public class TodoService {
     }
 
 
-    public Todo createTodo(PostTodoDTO dto){
-        return new Todo(idService.randomId(), dto.description(), dto.status());}
+    public Todo createTodo(PostTodoDTO dto) {
+        Todo todo = new Todo(idService.randomId(), dto.description(), dto.status());
+        return todoRepo.save(todo);
+    }
 
     public Todo getTodoById(String id) {
         return todoRepo.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Todo with id " + id + " not found"));}
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found"));}
 
     public Todo updateTodo (String id, PutTodoDTO dto) {
         Todo  existingTodo = getTodoById(id);
@@ -44,5 +47,11 @@ public class TodoService {
         );
         return todoRepo.save(updatedTodo);}
 
-    public void deleteTodoById(String id) {todoRepo.deleteById(id);}
+
+    public void deleteTodoById(String id) {
+        if (!todoRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found");
+        }
+        todoRepo.deleteById(id);
+    }
 }
