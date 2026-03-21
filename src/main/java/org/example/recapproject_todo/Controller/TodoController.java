@@ -24,9 +24,10 @@ public class TodoController {
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public Todo createTodo(@RequestBody PostTodoDTO dto) {
-
-        return todoService.createTodo(dto);}
+        return todoService.createTodo(dto);
+    }
 
     @GetMapping("/{id}")
     public Todo getTodoById(@PathVariable String id) {
