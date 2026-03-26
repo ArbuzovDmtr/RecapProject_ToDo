@@ -18,7 +18,16 @@ public class GlobalExceptionHandler {
         System.out.println(exception.getMessage());
         return ErrorMessage.builder()
                 .errorCode(HttpStatus.NOT_FOUND.value())
-                .errorMessage(exception.getMessage())
+                .errorMessage(exception.getReason())
+                .build();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handleGenericException(Exception exception) {
+        return ErrorMessage.builder()
+                .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .errorMessage("An unexpected error occurred.")
                 .build();
     }
 }
