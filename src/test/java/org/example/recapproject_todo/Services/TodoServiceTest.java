@@ -26,6 +26,8 @@ public class TodoServiceTest {
     @Mock
     IdService idService;
     @Mock
+    OpenAIService gptService;
+    @Mock
     TodoRepo todoRepo;
     @InjectMocks
     private TodoService todoService;
@@ -33,7 +35,7 @@ public class TodoServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoService = new TodoService(todoRepo, idService);}
+        todoService = new TodoService(todoRepo, idService,gptService);}
 
 
     @Test

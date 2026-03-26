@@ -15,10 +15,12 @@ public class TodoService {
 
     private final TodoRepo todoRepo;
     private final IdService idService;
+    private final OpenAIService gptService;
 
-    public TodoService(TodoRepo todoRepo, IdService idService) {
+    public TodoService(TodoRepo todoRepo, IdService idService,OpenAIService gptService) {
         this.todoRepo = todoRepo;
         this.idService = idService;
+        this.gptService= gptService;
     }
 
 
@@ -28,7 +30,8 @@ public class TodoService {
 
 
     public Todo createTodo(PostTodoDTO dto) {
-        Todo todo = new Todo(idService.randomId(), dto.description(), dto.status());
+        String corrected = gptService.grammarTest(dto.description());
+        Todo todo = new Todo(idService.randomId(), corrected, dto.status());
         return todoRepo.save(todo);
     }
 
