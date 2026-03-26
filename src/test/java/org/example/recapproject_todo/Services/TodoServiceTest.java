@@ -2,6 +2,7 @@ package org.example.recapproject_todo.Services;
 
 import org.example.recapproject_todo.DTO.PostTodoDTO;
 import org.example.recapproject_todo.DTO.PutTodoDTO;
+import org.example.recapproject_todo.Exceptions.NotFoundException;
 import org.example.recapproject_todo.Record.Todo;
 import org.example.recapproject_todo.Repository.TodoRepo;
 import org.example.recapproject_todo.Status.TodoStatus;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -94,14 +95,14 @@ public class TodoServiceTest {
         when(todoRepo.findById("999")).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(
-                ResponseStatusException.class,
+        NotFoundException exception = assertThrows(
+                NotFoundException.class,
                 () -> todoService.getTodoById("999")
         );
 
         // then
         assertEquals(404, exception.getStatusCode().value());
-        assertEquals("Todo not found", exception.getReason());
+        assertEquals("Todo with id: 999 not found.", exception.getReason());
         verify(todoRepo, times(1)).findById("999");
         verifyNoMoreInteractions(todoRepo, idService);
     }
@@ -133,14 +134,14 @@ public class TodoServiceTest {
         when(todoRepo.findById("999")).thenReturn(Optional.empty());
 
         // when
-        ResponseStatusException exception = assertThrows(
-                ResponseStatusException.class,
+        NotFoundException exception = assertThrows(
+                NotFoundException.class,
                 () -> todoService.updateTodo("999", dto)
         );
 
         // then
         assertEquals(404, exception.getStatusCode().value());
-        assertEquals("Todo not found", exception.getReason());
+        assertEquals("Todo with id: 999 not found.", exception.getReason());
         verify(todoRepo, times(1)).findById("999");
         verifyNoMoreInteractions(todoRepo, idService);
     }
@@ -165,14 +166,14 @@ public class TodoServiceTest {
         when(todoRepo.existsById("999")).thenReturn(false);
 
         // when
-        ResponseStatusException exception = assertThrows(
-                ResponseStatusException.class,
+        NotFoundException exception = assertThrows(
+                NotFoundException.class,
                 () -> todoService.deleteTodoById("999")
         );
 
         // then
         assertEquals(404, exception.getStatusCode().value());
-        assertEquals("Todo not found", exception.getReason());
+        assertEquals("Todo with id: 999 not found.", exception.getReason());
         verify(todoRepo, times(1)).existsById("999");
         verifyNoMoreInteractions(todoRepo, idService);
     }
