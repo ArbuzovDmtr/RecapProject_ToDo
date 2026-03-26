@@ -65,6 +65,7 @@ public class TodoServiceTest {
 
         when(idService.randomId()).thenReturn("abc-123");
         when(todoRepo.save(expected)).thenReturn(expected);
+        when(gptService.grammarTest(expected.description())).thenReturn(expected.description());
 
         // when
         Todo actual = todoService.createTodo(dto);
